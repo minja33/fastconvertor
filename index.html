@@ -22,7 +22,7 @@ body{background:#F8FAFC}.dark body{background:#0F172A}
 @media(max-width:767px){#ad-top-banner,#ad-bottom-banner{display:none}}
 @media(min-width:768px){.ad-m{display:none}}
 #ad-m-home,#ad-m-tool{width:300px;max-width:100%;aspect-ratio:300/250}
-#ad-m-bottom{width:320px;max-width:100%;aspect-ratio:320/50}
+#ad-m-top,#ad-m-bottom{width:320px;max-width:100%;aspect-ratio:320/50}
 .md h1{font-size:1.6rem;font-weight:800;margin:.6em 0}.md h2{font-size:1.3rem;font-weight:700;margin:.6em 0}.md h3{font-size:1.1rem;font-weight:700;margin:.6em 0}
 .md p,.md ul,.md pre,.md blockquote{margin:.6em 0}.md ul{list-style:disc;padding-left:1.4em}
 .md pre{background:#0F172A;color:#e2e8f0;padding:.8em;border-radius:8px;overflow:auto}.md code{background:rgba(100,116,139,.2);padding:0 .3em;border-radius:4px}
@@ -48,6 +48,7 @@ body{background:#F8FAFC}.dark body{background:#0F172A}
 <div class="max-w-[1500px] mx-auto px-4 py-4">
   <!-- ===== AD: TOP BANNER (728x90 / responsive) ===== -->
   <div id="ad-top-banner" class="ad w-full max-w-[728px] mx-auto mb-4" data-label="Ad 728×90"><!-- PASTE TOP BANNER AD SCRIPT HERE --></div>
+  <div id="ad-m-top" class="ad ad-m mx-auto mb-4"></div>
 
   <div class="flex gap-6 items-start">
     <!-- ===== AD: LEFT SIDEBAR (300x250, desktop only) ===== -->
@@ -415,7 +416,7 @@ ${C.map((c,i)=>`<div><h3 class="font-semibold text-white mb-3">${c}</h3><ul clas
 ['dragover','drop'].forEach(v=>addEventListener(v,e=>e.preventDefault()));
 /* ================= ADSTERRA BANNERS =================
    Each ad runs in its own iframe so the three ad scripts never clash. */
-const ADS={'ad-top-banner':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-bottom-banner':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-sidebar-left':['3aba4b3e6b6378e2f73d0f69cadce388',160,600],'ad-sidebar-right':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-home':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-tool':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-bottom':['9b23f4db156b9c4cff005ada5f0b46d1',320,50]};
+const ADS={'ad-top-banner':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-bottom-banner':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-sidebar-left':['3aba4b3e6b6378e2f73d0f69cadce388',160,600],'ad-sidebar-right':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-home':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-tool':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-top':['9b23f4db156b9c4cff005ada5f0b46d1',320,50],'ad-m-bottom':['9b23f4db156b9c4cff005ada5f0b46d1',320,50]};
 function fitAds(){document.querySelectorAll('.ad[data-w]').forEach(b=>{const w=+b.dataset.w,f=b.firstElementChild,k=Math.min(1,b.clientWidth/w);f.style.transform='scale('+k+')';f.style.transformOrigin='0 0'})}
 function mountAd(id){
   const b=document.getElementById(id),c=ADS[id];if(!b||!c||!b.offsetParent||b.querySelector('iframe'))return;
