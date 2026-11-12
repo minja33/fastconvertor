@@ -19,6 +19,10 @@
 body{background:#F8FAFC}.dark body{background:#0F172A}
 .ad{display:flex;align-items:center;justify-content:flex-start;border-radius:12px;overflow:hidden}
 #ad-top-banner,#ad-bottom-banner{aspect-ratio:728/90}
+@media(max-width:767px){#ad-top-banner,#ad-bottom-banner{display:none}}
+@media(min-width:768px){.ad-m{display:none}}
+#ad-m-home,#ad-m-tool{width:300px;max-width:100%;aspect-ratio:300/250}
+#ad-m-bottom{width:320px;max-width:100%;aspect-ratio:320/50}
 .md h1{font-size:1.6rem;font-weight:800;margin:.6em 0}.md h2{font-size:1.3rem;font-weight:700;margin:.6em 0}.md h3{font-size:1.1rem;font-weight:700;margin:.6em 0}
 .md p,.md ul,.md pre,.md blockquote{margin:.6em 0}.md ul{list-style:disc;padding-left:1.4em}
 .md pre{background:#0F172A;color:#e2e8f0;padding:.8em;border-radius:8px;overflow:auto}.md code{background:rgba(100,116,139,.2);padding:0 .3em;border-radius:4px}
@@ -61,6 +65,7 @@ body{background:#F8FAFC}.dark body{background:#0F172A}
 
   <!-- ===== AD: BOTTOM BANNER (728x90) ===== -->
   <div id="ad-bottom-banner" class="ad w-full max-w-[728px] mx-auto mt-8" data-label="Ad 728×90"><!-- PASTE BOTTOM BANNER AD SCRIPT HERE --></div>
+  <div id="ad-m-bottom" class="ad ad-m mx-auto mt-8"></div>
 </div>
 
 <footer id="ft" class="bg-slate-800 text-slate-300 mt-10"></footer>
@@ -355,16 +360,16 @@ function home(){PEND=null;
 function grid(){
   const q=Qs.toLowerCase().trim(),ok=t=>(Cat<0||t.c==Cat)&&(!q||(t.n+' '+t.d+' '+t.id).toLowerCase().includes(q));
   let h='';
-  if(!q&&Cat<0)h+=`<h2 class="font-bold text-lg mb-3">Top tools</h2><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">${TOP.map(id=>card(T.find(t=>t.id==id))).join('')}</div>`;
+  if(!q&&Cat<0)h+=`<h2 class="font-bold text-lg mb-3">Top tools</h2><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">${TOP.map(id=>card(T.find(t=>t.id==id))).join('')}</div><div id="ad-m-home" class="ad ad-m mx-auto mb-8"></div>`;
   C.forEach((c,i)=>{const L=T.filter(t=>t.c==i&&ok(t));if(L.length)h+=`<h2 class="font-bold text-lg mb-3">${c}</h2><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">${L.map(card).join('')}</div>`});
-  $('#grid').innerHTML=h||`<p class="text-center opacity-70 py-10">No tools match “${Qs}”. Try “pdf”, “image” or “json”.</p>`}
+  mountLater('ad-m-home');$('#grid').innerHTML=h||`<p class="text-center opacity-70 py-10">No tools match “${Qs}”. Try “pdf”, “image” or “json”.</p>`}
 
 function toolPage(t){
   document.title=t.n+' — FastConvertor';
   app.innerHTML=`<a href="#/" class="inline-flex items-center gap-1 text-sm text-brand dark:text-sky-400 font-medium">${ic('back','w-4 h-4')} All tools</a>
-  <h1 class="text-2xl md:text-4xl font-extrabold mt-2">${t.n}</h1><p class="opacity-75 mt-1 mb-3">${t.d}</p><div class="mb-5">${badge()}</div><div id="box" class="${CARD} p-4 md:p-6"></div>`;
+  <h1 class="text-2xl md:text-4xl font-extrabold mt-2">${t.n}</h1><p class="opacity-75 mt-1 mb-3">${t.d}</p><div class="mb-5">${badge()}</div><div id="box" class="${CARD} p-4 md:p-6"></div><div id="ad-m-tool" class="ad ad-m mx-auto mt-6"></div>`;
   t.p=load(LIB[t.id]);const bx=$('#box');
-  if(t.text){bx.innerHTML='<p class="opacity-60">Loading…</p>';t.p.then(()=>{t.r(bx);if(PEND){const f=PEND[0];PEND=null;const i=$('#i',bx);if(i&&f)f.text().then(x=>{i.value=x;i.dispatchEvent(new Event('input'))})}}).catch(e=>bx.textContent=e.message)}else fileView(t,bx)}
+  if(t.text){bx.innerHTML='<p class="opacity-60">Loading…</p>';t.p.then(()=>{t.r(bx);if(PEND){const f=PEND[0];PEND=null;const i=$('#i',bx);if(i&&f)f.text().then(x=>{i.value=x;i.dispatchEvent(new Event('input'))})}}).catch(e=>bx.textContent=e.message)}else fileView(t,bx);mountLater('ad-m-tool')}
 
 function fileView(t,el){
   const lbl=t.b||'Convert Now';let files=[],force=false,altEl,lastO;const clearAlt=()=>{altEl&&altEl.remove();altEl=null};
@@ -410,16 +415,16 @@ ${C.map((c,i)=>`<div><h3 class="font-semibold text-white mb-3">${c}</h3><ul clas
 ['dragover','drop'].forEach(v=>addEventListener(v,e=>e.preventDefault()));
 /* ================= ADSTERRA BANNERS =================
    Each ad runs in its own iframe so the three ad scripts never clash. */
-const ADS={'ad-top-banner':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-bottom-banner':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-sidebar-left':['3aba4b3e6b6378e2f73d0f69cadce388',160,600],'ad-sidebar-right':['70536364c507da0fd346ab906c7615b9',300,250]};
+const ADS={'ad-top-banner':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-bottom-banner':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-sidebar-left':['3aba4b3e6b6378e2f73d0f69cadce388',160,600],'ad-sidebar-right':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-home':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-tool':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-bottom':['9b23f4db156b9c4cff005ada5f0b46d1',320,50]};
 function fitAds(){document.querySelectorAll('.ad[data-w]').forEach(b=>{const w=+b.dataset.w,f=b.firstElementChild,k=Math.min(1,b.clientWidth/w);f.style.transform='scale('+k+')';f.style.transformOrigin='0 0'})}
-function initAds(){
-  Object.entries(ADS).forEach(([id,[k,w,h]])=>{
-    const b=document.getElementById(id),a=b&&b.closest('aside');if(!b||(a&&!a.offsetParent))return;
-    const f=document.createElement('iframe');f.width=w;f.height=h;f.scrolling='no';f.title='Advertisement';f.setAttribute('frameborder','0');f.style.cssText='border:0;flex:none;max-width:none';
-    f.srcdoc=`<!doctype html><html><body style="margin:0"><script>atOptions={'key':'${k}','format':'iframe','height':${h},'width':${w},'params':{}};<\/script><script src="https://bicea.org/22/${k}"><\/script></body></html>`;
-    b.innerHTML='';b.dataset.w=w;b.dataset.h=h;b.append(f)});
-  fitAds()}
-addEventListener('resize',fitAds);
+function mountAd(id){
+  const b=document.getElementById(id),c=ADS[id];if(!b||!c||!b.offsetParent||b.querySelector('iframe'))return;
+  const[k,w,h]=c,f=document.createElement('iframe');f.width=w;f.height=h;f.scrolling='no';f.title='Advertisement';f.setAttribute('frameborder','0');f.style.cssText='border:0;flex:none;max-width:none';
+  f.srcdoc=`<!doctype html><html><body style="margin:0"><script>atOptions={'key':'${k}','format':'iframe','height':${h},'width':${w},'params':{}};<\/script><script src="https://bicea.org/22/${k}"><\/script></body></html>`;
+  b.innerHTML='';b.dataset.w=w;b.dataset.h=h;b.append(f);fitAds()}
+function initAds(){Object.keys(ADS).forEach(mountAd)}
+const mountLater=id=>{const go=()=>setTimeout(()=>mountAd(id),300);document.readyState=='complete'?go():addEventListener('load',go)};
+addEventListener('resize',()=>{fitAds();initAds()});
 addEventListener('load',()=>setTimeout(initAds,300));
 route();
 </script>
