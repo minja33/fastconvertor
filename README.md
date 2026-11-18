@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="banner.svg" alt="FastConvertor: free private file tools in your browser" width="100%">
+  <a href="https://fastconvertor.site/"><img src="banner.svg" alt="FastConvertor: free private file tools in your browser" width="100%"></a>
 </p>
 
 <p align="center">
