@@ -18,8 +18,8 @@
 <style>
 body{background:#F8FAFC}.dark body{background:#0F172A}
 .ad{display:flex;align-items:center;justify-content:flex-start;border-radius:12px;overflow:hidden}
-#ad-top-banner,#ad-bottom-banner{aspect-ratio:728/90}
-@media(max-width:767px){#ad-top-banner,#ad-bottom-banner{display:none}}
+#ad-d-home,#ad-d-tool,#ad-bottom-banner{aspect-ratio:728/90;width:100%;max-width:728px}
+@media(max-width:767px){#ad-d-home,#ad-d-tool,#ad-bottom-banner{display:none}}
 @media(min-width:768px){.ad-m{display:none}}
 #ad-m-home,#ad-m-tool{width:300px;max-width:100%;aspect-ratio:300/250}
 #ad-m-top,#ad-m-bottom{width:320px;max-width:100%;aspect-ratio:320/50}
@@ -48,7 +48,6 @@ summary::-webkit-details-marker{display:none}
 
 <div class="max-w-[1280px] mx-auto px-4 py-4">
   <!-- ===== AD: TOP BANNER (728x90 / responsive) ===== -->
-  <div id="ad-top-banner" class="ad w-full max-w-[728px] mx-auto mb-4" data-label="Ad 728×90"><!-- PASTE TOP BANNER AD SCRIPT HERE --></div>
   <div id="ad-m-top" class="ad ad-m mx-auto mb-4"></div>
 
   <div class="flex gap-6 items-start">
@@ -493,6 +492,7 @@ function home(){PEND=null;
   app.innerHTML=`<section class="text-center py-10 md:py-14 px-4 rounded-3xl bg-gradient-to-b from-blue-100/70 to-transparent dark:from-blue-950/50 mb-6"><h1 class="text-3xl md:text-5xl font-extrabold tracking-tight">Convert PDF to Word, merge and compress PDFs <span class="bg-gradient-to-r from-brand to-sky2 bg-clip-text text-transparent">in one click</span></h1>
   <p class="mt-3 opacity-75 max-w-2xl mx-auto">Free PDF to Word, Word to PDF, merge, split and compress tools, plus image converters. Your files stay in your browser and are never uploaded.</p><div class="mt-5">${badge()}</div></section>
   <section class="mb-8"><label id="qdrop" class="block cursor-pointer rounded-2xl border-2 border-dashed border-blue-300 dark:border-blue-800 bg-white dark:bg-slate-800 p-8 text-center transition hover:border-brand"><input id="qin" type="file" multiple class="hidden"><div class="text-brand dark:text-sky-400 mb-2">${ic('cloud','w-12 h-12 mx-auto')}</div><div class="font-semibold text-lg">Drop any file here, or click to choose</div><div class="text-sm opacity-60 mt-1">We'll show what you can do with it. Your file stays in your browser.</div></label><div id="qres" class="mt-5"></div></section>
+  <div id="ad-d-home" class="ad mx-auto mb-8"></div>
   <div id="pills" class="flex gap-2 overflow-x-auto pb-2 mb-4"></div><div id="grid"></div>`;
   $('#pills').innerHTML=['All',...C].map((c,i)=>`<button data-c="${i-1}" class="shrink-0 rounded-full px-4 py-1.5 text-sm font-medium border ${i-1==Cat?'bg-brand text-white border-brand':'border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800'}">${c}</button>`).join('');
   $('#pills').onclick=e=>{const b=e.target.closest('button');if(!b)return;Cat=+b.dataset.c;home()};
@@ -502,6 +502,7 @@ function home(){PEND=null;
   ['dragleave','drop'].forEach(v=>qd.addEventListener(v,e=>{e.preventDefault();qd.classList.remove('drag')}));
   qd.addEventListener('drop',e=>{if(e.dataTransfer.files.length)suggest([...e.dataTransfer.files])});
   if(QF)suggest(QF);
+  mountLater('ad-d-home');
   grid()}
 function grid(){
   const q=Qs.toLowerCase().trim(),ok=t=>(Cat<0||t.c==Cat)&&(!q||(t.n+' '+t.d+' '+t.id).toLowerCase().includes(q));
@@ -513,12 +514,12 @@ function grid(){
 function toolPage(t){
   setMeta('/'+t.id+'/',(SEO[t.id]||t.n+' Free Online')+' | FastConvertor',t.d+PRIV);
   app.innerHTML=`<a href="/" class="inline-flex items-center gap-1 text-sm text-brand dark:text-sky-400 font-medium">${ic('back','w-4 h-4')} All tools</a>
-  <h1 class="text-2xl md:text-4xl font-extrabold mt-2">${t.n}</h1><p class="opacity-75 mt-1 mb-3">${t.d}</p><div class="mb-5">${badge()}</div><div id="box" class="${CARD} p-4 md:p-6"></div><div id="ad-m-tool" class="ad ad-m mx-auto mt-6"></div>
+  <h1 class="text-2xl md:text-4xl font-extrabold mt-2">${t.n}</h1><p class="opacity-75 mt-1 mb-3">${t.d}</p><div class="mb-5">${badge()}</div><div id="box" class="${CARD} p-4 md:p-6"></div><div id="ad-m-tool" class="ad ad-m mx-auto mt-6"></div><div id="ad-d-tool" class="ad mx-auto mt-6"></div>
   <section class="mt-10"><h2 class="font-bold text-xl mb-3">How to use ${t.n}</h2><ol class="list-decimal pl-5 grid gap-1 opacity-80">${(t.how||(t.text?['Type or paste your content into the editor.','Adjust the options if you need to.','Copy or download your result.']:['Add your file by dragging it in or clicking the upload box.','Choose any options shown.','Click "'+t.b+'" and download the result.'])).map(x=>`<li>${x}</li>`).join('')}</ol>
   <p class="mt-3 opacity-80">Everything runs in your browser, so your files are never uploaded to a server.</p>
   <h2 class="font-bold text-xl mt-8 mb-3">Related tools</h2><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">${T.filter(x=>x.c==t.c&&x.id!=t.id).slice(0,3).map(card).join('')}</div></section>`;
   t.p=load(LIB[t.id]);const bx=$('#box');
-  if(t.text){bx.innerHTML='<p class="opacity-60">Loading…</p>';t.p.then(()=>{t.r(bx);if(PEND){const f=PEND[0];PEND=null;const i=$('#i',bx);if(i&&f)f.text().then(x=>{i.value=x;i.dispatchEvent(new Event('input'))})}}).catch(e=>bx.textContent=e.message)}else fileView(t,bx);mountLater('ad-m-tool')}
+  if(t.text){bx.innerHTML='<p class="opacity-60">Loading…</p>';t.p.then(()=>{t.r(bx);if(PEND){const f=PEND[0];PEND=null;const i=$('#i',bx);if(i&&f)f.text().then(x=>{i.value=x;i.dispatchEvent(new Event('input'))})}}).catch(e=>bx.textContent=e.message)}else fileView(t,bx);mountLater('ad-m-tool');mountLater('ad-d-tool')}
 
 function fileView(t,el){
   const lbl=t.b||'Convert Now';let files=[],force=false,altEl,lastO;const clearAlt=()=>{altEl&&altEl.remove();altEl=null};
@@ -570,7 +571,7 @@ ${C.map((c,i)=>`<div><h3 class="font-semibold text-white mb-3">${c}</h3><ul clas
 ['dragover','drop'].forEach(v=>addEventListener(v,e=>e.preventDefault()));
 /* ================= ADSTERRA BANNERS =================
    Each ad runs in its own iframe so the three ad scripts never clash. */
-const ADS={'ad-top-banner':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-bottom-banner':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-sidebar-left':['3aba4b3e6b6378e2f73d0f69cadce388',160,600],'ad-sidebar-right':['3aba4b3e6b6378e2f73d0f69cadce388',160,600],'ad-m-home':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-tool':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-top':['9b23f4db156b9c4cff005ada5f0b46d1',320,50],'ad-m-bottom':['9b23f4db156b9c4cff005ada5f0b46d1',320,50]};
+const ADS={'ad-d-home':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-d-tool':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-bottom-banner':['3337227712d5e5f1af2664e4fd803b72',728,90],'ad-sidebar-left':['3aba4b3e6b6378e2f73d0f69cadce388',160,600],'ad-sidebar-right':['3aba4b3e6b6378e2f73d0f69cadce388',160,600],'ad-m-home':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-tool':['70536364c507da0fd346ab906c7615b9',300,250],'ad-m-top':['9b23f4db156b9c4cff005ada5f0b46d1',320,50],'ad-m-bottom':['9b23f4db156b9c4cff005ada5f0b46d1',320,50]};
 function fitAds(){document.querySelectorAll('.ad[data-w]').forEach(b=>{const w=+b.dataset.w,f=b.firstElementChild,k=Math.min(1,b.clientWidth/w);f.style.transform='scale('+k+')';f.style.transformOrigin='0 0'})}
 function mountAd(id){
   const b=document.getElementById(id),c=ADS[id];if(!b||!c||!b.offsetParent||b.querySelector('iframe'))return;
